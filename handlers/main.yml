@@ -1,0 +1,9 @@
+---
+- name: restart youtrack service
+  ansible.builtin.systemd:
+    name: youtrack
+    state: restarted
+
+- name: reload systemd daemons
+  ansible.builtin.systemd:
+    daemon_reload: yes

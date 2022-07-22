@@ -1,0 +1,3 @@
+youtrack_required_packages:
+  - hostname
+  - openjdk-11-jdk

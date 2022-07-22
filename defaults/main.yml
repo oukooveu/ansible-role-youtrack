@@ -1,0 +1,12 @@
+---
+youtrack_version: 2021.3.29124
+youtrack_create_user: true
+youtrack_user: youtrack
+youtrack_group: "{{ youtrack_user }}"
+youtrack_home_dir: "/home/{{ youtrack_user }}"
+youtrack_releases_dir: "{{ youtrack_home_dir }}/releases"
+youtrack_listen_host: 127.0.0.1
+youtrack_listen_port: 8080
+youtrack_xmx_gigabytes: 1
+youtrack_required_packages:
+  - hostname
