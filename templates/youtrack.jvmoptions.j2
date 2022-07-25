@@ -1,0 +1,5 @@
+#jinja2: lstrip_blocks: True
+# {{ ansible_managed }}
+{% for k, v in youtrack_jvm_options.items() %}
+-D{{ k }}={{ v }}
+{% endfor %}

@@ -6,7 +6,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 WorkingDirectory={{ youtrack_home_dir }}
-ExecStart=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar --J-Xmx{{ youtrack_xmx_gigabytes }}G {{ youtrack_listen_port }}
+ExecStart=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar --J-Xmx{{ youtrack_xmx_megabytes }}m {{ __youtrack_exec_options }}
 ExecStop=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar stop
 User={{ youtrack_user }}
 

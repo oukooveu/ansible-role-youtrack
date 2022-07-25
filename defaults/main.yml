@@ -4,7 +4,20 @@ youtrack_create_user: true
 youtrack_user: youtrack
 youtrack_group: "{{ youtrack_user }}"
 youtrack_home_dir: "/home/{{ youtrack_user }}"
+youtrack_data_dir: "{{ youtrack_home_dir }}/teamsysdata"
+youtrack_conf_dir: "{{ youtrack_data_dir }}/conf"
 youtrack_releases_dir: "{{ youtrack_home_dir }}/releases"
-youtrack_listen_host: 127.0.0.1
-youtrack_listen_port: 8080
-youtrack_xmx_gigabytes: 1
+youtrack_xmx_megabytes: 1024
+youtrack_restore_backup: false
+youtrack_restore_backup_file: "/tmp/youtrack.tar.gz"
+youtrack_startup_options: ""
+# https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#general-parameters
+# only system properties are supported, if you need something else you can pass it through youtrack_startup_options
+youtrack_jvm_options:
+  disable.configuration.wizard.on.clean.install: false
+# https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#environmental-parameters
+youtrack_env_options:
+  listen-address: 0.0.0.0
+  listen-port: 8080
+  base-url: "http://localhost:8080"
+  secure-mode: disable

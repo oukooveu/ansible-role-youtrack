@@ -23,14 +23,20 @@
     group: "{{ youtrack_group }}"
     mode: 0750
   loop:
+    - "{{ youtrack_data_dir }}"
+    - "{{ youtrack_conf_dir }}"
     - "{{ youtrack_releases_dir }}"
+
+- name: prepare startup options
+  set_fact:
+    __youtrack_exec_options: "{% for k,v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
 
 - name: configure youtrack service
   ansible.builtin.template:
     src: youtrack.service.j2
     dest: /etc/systemd/system/youtrack.service
     mode: 0644
-  notify: reload systemd daemons
+  notify: restart youtrack service
 
 - name: download youtrack jar file
   ansible.builtin.get_url:
@@ -41,7 +47,7 @@
     group: "{{ youtrack_group }}"
     mode: 0640
 
-- name: update symbolic link
+- name: create/update symbolic link
   ansible.builtin.file:
     state: link
     src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.jar"
@@ -50,8 +56,19 @@
     group: "{{ youtrack_group }}"
   notify: restart youtrack service
 
+- name: configure jvm options
+  ansible.builtin.template:
+    src: youtrack.jvmoptions.j2
+    dest: "{{ youtrack_conf_dir }}/youtrack.jvmoptions"
+    mode: 0644
+  notify: restart youtrack service
+
 - name: start youtrack service
   ansible.builtin.systemd:
     name: youtrack
     state: started
     enabled: yes
+
+- name: restore backup
+  include_tasks: backup.yml
+  when: youtrack_restore_backup|bool
