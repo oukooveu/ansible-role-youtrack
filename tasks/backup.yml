@@ -1,0 +1,31 @@
+---
+- name: stop service
+  ansible.builtin.systemd:
+    name: youtrack
+    state: stopped
+
+- name: cleanup existing data
+  ansible.builtin.file:
+    path: "{{ youtrack_data_dir }}"
+    state: absent
+
+- name: create data directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{ youtrack_data_dir }}"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    mode: 0750
+
+- name: restore youtrack backup from given location
+  ansible.builtin.unarchive:
+    src: "{{ youtrack_restore_backup_file }}"
+    dest: "{{ youtrack_data_dir }}"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    remote_src: yes
+
+- name: start service
+  ansible.builtin.systemd:
+    name: youtrack
+    state: started
