@@ -28,7 +28,7 @@
     - "{{ youtrack_releases_dir }}"
 
 - name: prepare startup options
-  set_fact:
+  ansible.builtin.set_fact:
     __youtrack_exec_options: "{% for k,v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
 
 - name: configure youtrack service
