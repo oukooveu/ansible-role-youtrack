@@ -25,6 +25,13 @@
     group: "{{ youtrack_group }}"
     remote_src: yes
 
+- name: fix permissions (unarchive doesn't do it properly)
+  ansible.builtin.file:
+    path: "{{ youtrack_data_dir }}"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    recurse: yes
+
 - name: start service
   ansible.builtin.systemd:
     name: youtrack
