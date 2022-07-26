@@ -11,10 +11,12 @@ youtrack_xmx_megabytes: 1024
 youtrack_restore_backup: false
 youtrack_restore_backup_file: "/tmp/youtrack.tar.gz"
 youtrack_startup_options: ""
+# YouTrack JVM options
 # https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#general-parameters
 # only system properties are supported, if you need something else you can pass it through youtrack_startup_options
 youtrack_jvm_options:
   disable.configuration.wizard.on.clean.install: false
+# YouTrack startup options (are passed through command line arguments)
 # https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#environmental-parameters
 youtrack_env_options:
   listen-address: 0.0.0.0

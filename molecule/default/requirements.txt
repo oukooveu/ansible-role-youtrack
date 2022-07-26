@@ -1,5 +1,5 @@
-yamllint
-ansible
-ansible-lint
-flake8
-molecule[podman,lint]
+yamllint==1.27.1
+ansible==6.1.0
+ansible-lint==6.3.0
+flake8==4.0.1
+molecule[podman,lint]==4.0.1
