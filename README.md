@@ -1,4 +1,5 @@
 # YouTrack ansible role
+[![Molecule](https://github.com/oukooveu/ansible-role-youtrack/actions/workflows/molecule.yml/badge.svg)](https://github.com/oukooveu/ansible-role-youtrack/actions/workflows/molecule.yml)
 
 Role to install Jetbrains YouTrack project management platform.
 

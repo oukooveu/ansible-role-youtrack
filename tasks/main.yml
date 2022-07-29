@@ -50,6 +50,7 @@
 - name: create/update symbolic link
   ansible.builtin.file:
     state: link
+    follow: no
     src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.jar"
     dest: "{{ youtrack_home_dir }}/youtrack.jar"
     owner: "{{ youtrack_user }}"
