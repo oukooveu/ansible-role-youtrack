@@ -11,10 +11,9 @@ lint: |
 platforms:
   - name: molecule
     hostname: molecule
-    # image: quay.io/centos/centos:stream8
-    image: ${MOLECULE_IMAGE:-debian:10}
+    image: quay.io/centos/centos:stream8
     privileged: false
-    pre_build_image: ${MOLECULE_PRE_BUILD_IMAGE:-false}
+    pre_build_image: ${MOLECULE_PRE_BUILD_IMAGE:-true}
     exposed_ports:
       - 8080/tcp
     published_ports:
