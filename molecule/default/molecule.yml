@@ -30,3 +30,5 @@ provisioner:
 verifier:
   name: testinfra
   enabled: True
+  options:
+    p: 'no:pytest-ansible'
