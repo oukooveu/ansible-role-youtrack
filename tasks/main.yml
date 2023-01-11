@@ -29,7 +29,7 @@
 
 - name: prepare startup options
   ansible.builtin.set_fact:
-    __youtrack_exec_options: "{% for k,v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
+    __youtrack_exec_options: "{% for k, v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
 
 - name: configure youtrack service
   ansible.builtin.template:
@@ -71,5 +71,5 @@
     enabled: yes
 
 - name: restore backup
-  include_tasks: backup.yml
+  ansible.builtin.include_tasks: backup.yml
   when: youtrack_restore_backup|bool
