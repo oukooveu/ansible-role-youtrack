@@ -11,7 +11,7 @@ lint: |
 platforms:
   - name: molecule
     hostname: molecule
-    image: quay.io/centos/centos:stream8
+    image: ${MOLECULE_IMAGE:-quay.io/centos/centos:stream8}
     privileged: false
     pre_build_image: ${MOLECULE_PRE_BUILD_IMAGE:-true}
     exposed_ports:
