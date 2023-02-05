@@ -56,6 +56,7 @@
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
   notify: restart youtrack service
+  when: not ansible_check_mode
 
 - name: configure jvm options
   ansible.builtin.template:
