@@ -13,12 +13,10 @@ jobs:
       max-parallel: 4
       matrix:
         os:
-          - image: quay.io/centos/centos:stream8
-            pre_build: true
-          - image: debian:10
-            pre_build: false
-          - image: debian:11
-            pre_build: false
+          - rockylinux:9
+          - rockylinux:8
+          - debian:10
+          - debian:11
     steps:
       - uses: actions/checkout@v3
       - name: python
@@ -33,4 +31,3 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.os.image }}
-          MOLECULE_PRE_BUILD_IMAGE: ${{ matrix.os.pre_build }}
