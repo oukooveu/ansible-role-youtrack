@@ -1,5 +1,5 @@
 ---
-youtrack_version: 2021.3.29124
+youtrack_version: '2022.3.65369'
 youtrack_create_user: true
 youtrack_user: youtrack
 youtrack_group: "{{ youtrack_user }}"
@@ -19,7 +19,7 @@ youtrack_jvm_options:
 # YouTrack startup options (are passed through command line arguments)
 # https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#environmental-parameters
 youtrack_env_options:
-  listen-address: 0.0.0.0
+  listen-address: '0.0.0.0'
   listen-port: 8080
   base-url: "http://localhost:8080"
   secure-mode: disable
