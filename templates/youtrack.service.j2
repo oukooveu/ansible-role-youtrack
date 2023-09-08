@@ -1,14 +1,15 @@
 [Unit]
 Description=Youtrack
-Requires=network.target
-After=syslog.target network.target
 
 [Service]
 Type=simple
-WorkingDirectory={{ youtrack_home_dir }}
-ExecStart=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar --J-Xmx{{ youtrack_xmx_megabytes }}m {{ __youtrack_exec_options }}
-ExecStop=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar stop
+RemainAfterExit=true
+ExecStart={{ youtrack_home_dir }}/bin/youtrack.sh start --no-browser
+ExecStop={{ youtrack_home_dir }}/bin/youtrack.sh stop
 User={{ youtrack_user }}
+RestartSec=5
+Restart=on-failure
+
 
 [Install]
 WantedBy=default.target
