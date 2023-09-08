@@ -9,8 +9,8 @@ platforms:
     hostname: molecule
     command: /lib/systemd/systemd
     systemd: true
-    exposed_ports:
-      - 8080/tcp
+    published_ports:
+      - 127.0.0.1:8080:8080/tcp
 provisioner:
   name: ansible
   ansible_args:
