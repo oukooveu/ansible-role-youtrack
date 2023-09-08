@@ -1,5 +1,5 @@
 ---
-youtrack_version: '2022.3.65369'
+youtrack_version: '2023.1.17582'
 youtrack_create_user: true
 youtrack_user: youtrack
 youtrack_group: "{{ youtrack_user }}"
