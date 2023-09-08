@@ -3,8 +3,7 @@ name: molecule tests
 on:
   push:
   pull_request:
-    branches:
-      - master
+    types: [opened, reopened]
 jobs:
   molecule:
     runs-on: ubuntu-latest
