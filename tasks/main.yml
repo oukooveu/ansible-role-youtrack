@@ -47,30 +47,25 @@
     group: "{{ youtrack_group }}"
     mode: 0640
 
-- name: Install Unzip
+- name: install unzip
   apt:
     name: unzip
     update_cache: yes
 
-- name: Unarchive zip file
+- name: unarchive zip file
   ansible.builtin.unarchive:
     src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.zip"
     dest: "{{ youtrack_releases_dir }}/"
     remote_src: yes
 
-- name: Mkdir bin
-  shell: mkdir -p /home/youtrack/bin
-
-- name: create/update symbolic link
-  ansible.builtin.file:
-    state: link
-    follow: no
-    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh"
-    dest: "{{ youtrack_home_dir }}/bin/youtrack.sh"
+- name: set ownership and group for the directory
+  file:
+    path: "{{ youtrack_releases_dir }}/"
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
-  notify: restart youtrack service
-  when: not ansible_check_mode
+    mode: 0755
+    state: directory
+    recurse: yes
 
 - name: configure jvm options
   ansible.builtin.template:
@@ -89,10 +84,10 @@
   ansible.builtin.include_tasks: backup.yml
   when: youtrack_restore_backup|bool
 
-- name: Read token
+- name: read token
   shell: cat /home/youtrack/releases/youtrack-{{ youtrack_version }}/conf/internal/services/configurationWizard/wizard_token.txt
   register: token
 
-- name: Show token
+- name: show token
   debug:
     var: token.stdout
