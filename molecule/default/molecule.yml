@@ -3,23 +3,25 @@ dependency:
   name: galaxy
 driver:
   name: podman
-lint: |
-  set -e
-  yamllint .
-  ansible-lint .
-  flake8
 platforms:
   - name: molecule
-    image: ${MOLECULE_IMAGE:-debian:10}
+    image: ${MOLECULE_IMAGE:-debian:11}
     hostname: molecule
-    command: /sbin/init
+    command: /lib/systemd/systemd
     systemd: true
-    exposed_ports:
-      - 8080/tcp
+    published_ports:
+      - 127.0.0.1:8080:8080/tcp
 provisioner:
   name: ansible
+  ansible_args:
+    - -D
+  config_options:
+    defaults:
+      any_errors_fatal: true
+      callbacks_enabled: ansible.posix.profile_tasks
 verifier:
   name: testinfra
-  enabled: True
+  enabled: true
   options:
     p: 'no:pytest-ansible'
+    v: true
