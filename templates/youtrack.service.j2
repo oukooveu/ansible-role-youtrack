@@ -4,8 +4,8 @@ Description=Youtrack
 [Service]
 Type=simple
 RemainAfterExit=true
-ExecStart={{ youtrack_home_dir }}/bin/youtrack.sh start --no-browser
-ExecStop={{ youtrack_home_dir }}/bin/youtrack.sh stop
+ExecStart={{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh start --no-browser
+ExecStop={{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh stop
 User={{ youtrack_user }}
 RestartSec=5
 Restart=on-failure
@@ -13,3 +13,4 @@ Restart=on-failure
 
 [Install]
 WantedBy=default.target
+
