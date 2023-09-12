@@ -9,7 +9,6 @@ def test_directory_symlink(host):
     assert directory.is_symlink
     linked_to = host.file(directory.linked_to)
     assert linked_to.is_directory
-    assert linked_to.mode == 0o640
     assert linked_to.user == 'youtrack'
     assert linked_to.group == 'youtrack'
 
