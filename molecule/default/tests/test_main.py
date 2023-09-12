@@ -4,15 +4,14 @@ def test_user(host):
     assert user.group == 'youtrack'
 
 
-def test_file_jar(host):
-    link = host.file('/home/youtrack/youtrack.jar')
-    assert link.exists
-    assert link.is_symlink
-    jar = host.file(link.linked_to)
-    assert jar.is_file
-    assert jar.mode == 0o640
-    assert jar.user == 'youtrack'
-    assert jar.group == 'youtrack'
+def test_directory_symlink(host):
+    directory = host.file('/home/youtrack/youtrack')
+    assert directory.is_symlink
+    linked_to = host.file(directory.linked_to)
+    assert linked_to.is_directory
+    assert linked_to.mode == 0o640
+    assert linked_to.user == 'youtrack'
+    assert linked_to.group == 'youtrack'
 
 
 def test_file_conf(host):
