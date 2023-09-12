@@ -67,6 +67,17 @@
     state: directory
     recurse: yes
 
+- name: create/update symbolic link
+  ansible.builtin.file:
+    state: link
+    follow: no
+    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh"
+    dest: "{{ youtrack_home_dir }}/youtrack.sh"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+  notify: restart youtrack service
+  when: not ansible_check_mode
+
 - name: configure jvm options
   ansible.builtin.template:
     src: youtrack.jvmoptions.j2
