@@ -26,6 +26,7 @@
     - "{{ youtrack_data_dir }}"
     - "{{ youtrack_conf_dir }}"
     - "{{ youtrack_releases_dir }}"
+    - "{{ youtrack_siml_dir }}"
 
 - name: prepare startup options
   ansible.builtin.set_fact:
@@ -71,10 +72,11 @@
   ansible.builtin.file:
     state: link
     follow: no
-    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh"
-    dest: "{{ youtrack_home_dir }}/youtrack.sh"
+    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}"
+    dest: "{{ youtrack_home_dir }}/youtrack"
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
+    force: yes
   notify: restart youtrack service
   when: not ansible_check_mode
 
