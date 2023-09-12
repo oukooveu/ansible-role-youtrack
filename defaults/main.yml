@@ -7,6 +7,7 @@ youtrack_home_dir: "/home/{{ youtrack_user }}"
 youtrack_data_dir: "{{ youtrack_home_dir }}/teamsysdata"
 youtrack_conf_dir: "{{ youtrack_data_dir }}/conf"
 youtrack_releases_dir: "{{ youtrack_home_dir }}/releases"
+youtrack_siml_dir: "{{ youtrack_home_dir }}/youtrack"
 youtrack_xmx_megabytes: 1024
 youtrack_restore_backup: false # use this option carefully, youtrack data directory will be deleted
 youtrack_restore_backup_file: "/tmp/youtrack.tar.gz"
