@@ -28,6 +28,7 @@
     - "{{ youtrack_releases_dir }}"
     - "{{ youtrack_siml_dir }}"
 
+
 - name: prepare startup options
   ansible.builtin.set_fact:
     __youtrack_exec_options: "{% for k, v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
@@ -39,25 +40,42 @@
     mode: 0644
   notify: restart youtrack service
 
+
+- name: check if youtrack zip file exists
+  ansible.builtin.stat:
+    path: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.zip"
+  register: youtrack_file_exists
+
+- name: debug youtrack file status
+  ansible.builtin.debug:
+    var: youtrack_file_exists
+
 - name: download youtrack zip file
   ansible.builtin.get_url:
     url: "https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.zip"
     dest: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.zip"
-#    checksum: "sha256:https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.zip.sha256"
+    checksum: "sha256:https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.zip.sha256"
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
     mode: 0640
+  when: not youtrack_file_exists.stat.exists
 
 - name: install unzip
-  apt:
+  ansible.builtin.package:
     name: unzip
-    update_cache: yes
+    state: present
+
+- name: check if zip file is already unarchived
+  ansible.builtin.stat:
+    path: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}"
+  register: zip_file
 
 - name: unarchive zip file
   ansible.builtin.unarchive:
     src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.zip"
     dest: "{{ youtrack_releases_dir }}/"
     remote_src: yes
+  when: zip_file.stat.exists == false
 
 - name: set ownership and group for the directory
   file:
