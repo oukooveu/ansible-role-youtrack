@@ -1,35 +1,6 @@
 ---
-- name: create youtrack group
-  ansible.builtin.group:
-    name: "{{ youtrack_group }}"
-    state: present
-  when: youtrack_create_user|bool
-
-- name: create youtrack user
-  ansible.builtin.user:
-    name: "{{ youtrack_user }}"
-    comment: Youtrack
-    group: "{{ youtrack_user }}"
-    password: '!'
-    create_home: yes
-    home: "{{ youtrack_home_dir }}"
-  when: youtrack_create_user|bool
-
-- name: create required directories
-  ansible.builtin.file:
-    state: directory
-    path: "{{ item }}"
-    owner: "{{ youtrack_user }}"
-    group: "{{ youtrack_group }}"
-    mode: 0750
-  loop:
-    - "{{ youtrack_data_dir }}"
-    - "{{ youtrack_conf_dir }}"
-    - "{{ youtrack_releases_dir }}"
-
-- name: prepare startup options
-  ansible.builtin.set_fact:
-    __youtrack_exec_options: "{% for k, v in youtrack_env_options.items() %}--{{ k }}={{ v }}{% if not loop.last %} {% endif %}{% endfor %} {{ youtrack_startup_options }}"
+- name: create user and required directories
+  ansible.builtin.include_tasks: user.yml
 
 - name: configure youtrack service
   ansible.builtin.template:
@@ -38,38 +9,27 @@
     mode: 0644
   notify: restart youtrack service
 
-- name: download youtrack jar file
-  ansible.builtin.get_url:
-    url: "https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.jar"
-    dest: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.jar"
-    checksum: "sha256:https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.jar.sha256"
-    owner: "{{ youtrack_user }}"
-    group: "{{ youtrack_group }}"
-    mode: 0640
+- name: download archive
+  ansible.builtin.include_tasks: archive.yml
+
+- name: configure
+  ansible.builtin.include_tasks: configure.yml
 
 - name: create/update symbolic link
   ansible.builtin.file:
     state: link
     follow: no
-    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}.jar"
-    dest: "{{ youtrack_home_dir }}/youtrack.jar"
+    src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}"
+    dest: "{{ youtrack_home_dir }}/youtrack"
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
   notify: restart youtrack service
   when: not ansible_check_mode
 
-- name: configure jvm options
-  ansible.builtin.template:
-    src: youtrack.jvmoptions.j2
-    dest: "{{ youtrack_conf_dir }}/youtrack.jvmoptions"
-    mode: 0644
-  notify: restart youtrack service
-
-- name: start youtrack service
+- name: enable youtrack service
   ansible.builtin.systemd:
     name: youtrack
-    state: started
-    enabled: yes
+    enabled: true
 
 - name: restore backup
   ansible.builtin.include_tasks: backup.yml

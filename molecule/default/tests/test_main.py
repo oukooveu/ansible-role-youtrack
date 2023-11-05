@@ -4,22 +4,15 @@ def test_user(host):
     assert user.group == 'youtrack'
 
 
-def test_file_jar(host):
-    link = host.file('/home/youtrack/youtrack.jar')
+def test_release(host):
+    link = host.file('/home/youtrack/youtrack')
     assert link.exists
     assert link.is_symlink
-    jar = host.file(link.linked_to)
-    assert jar.is_file
-    assert jar.mode == 0o640
-    assert jar.user == 'youtrack'
-    assert jar.group == 'youtrack'
-
-
-def test_file_conf(host):
-    file = host.file('/home/youtrack/teamsysdata/conf/youtrack.jvmoptions')
-    assert file.exists
-    assert file.is_file
-    assert file.contains('^-Ddisable.configuration.wizard.on.clean.install=False$')
+    target = host.file(link.linked_to)
+    assert target.is_directory
+    assert target.mode == 0o750
+    assert target.user == 'youtrack'
+    assert target.group == 'youtrack'
 
 
 def test_service(host):

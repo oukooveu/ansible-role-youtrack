@@ -1,25 +1,28 @@
 ---
-youtrack_version: '2022.3.65369'
+youtrack_version: "2023.2.20316"
 youtrack_create_user: true
 youtrack_user: youtrack
 youtrack_group: "{{ youtrack_user }}"
 youtrack_home_dir: "/home/{{ youtrack_user }}"
 youtrack_data_dir: "{{ youtrack_home_dir }}/teamsysdata"
-youtrack_conf_dir: "{{ youtrack_data_dir }}/conf"
+youtrack_logs_dir: "{{ youtrack_home_dir }}/logs"
+youtrack_backups_dir: "{{ youtrack_home_dir }}/backups"
 youtrack_releases_dir: "{{ youtrack_home_dir }}/releases"
-youtrack_xmx_megabytes: 1024
 youtrack_restore_backup: false # use this option carefully, youtrack data directory will be deleted
-youtrack_restore_backup_file: "/tmp/youtrack.tar.gz"
-youtrack_startup_options: ""
-# YouTrack JVM options
-# https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#general-parameters
-# only system properties are supported, if you need something else you can pass it through youtrack_startup_options
-youtrack_jvm_options:
-  disable.configuration.wizard.on.clean.install: false
-# YouTrack startup options (are passed through command line arguments)
-# https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#environmental-parameters
-youtrack_env_options:
-  listen-address: '0.0.0.0'
-  listen-port: 8080
-  base-url: "http://localhost:8080"
-  secure-mode: disable
+youtrack_restore_backup_file: ""
+# YouTrack options: https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html
+youtrack_options:
+  - name: "--data-dir"
+    value: "{{ youtrack_data_dir }}"
+  - name: "--logs-dir"
+    value: "{{ youtrack_logs_dir }}"
+  - name: "--backups-dir"
+    value: "{{ youtrack_backups_dir }}"
+  - name: "--listen-address"
+    value: "0.0.0.0"
+  - name: "--listen-port"
+    value: "8080"
+  - name: "--base-url"
+    value: "http://localhost:8080"
+  - name: "--secure-mode"
+    value: "disable"

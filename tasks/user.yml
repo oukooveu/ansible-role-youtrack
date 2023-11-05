@@ -1,0 +1,30 @@
+---
+- name: user | create youtrack group
+  ansible.builtin.group:
+    name: "{{ youtrack_group }}"
+    state: present
+  when: youtrack_create_user|bool
+
+- name: user | create youtrack user
+  ansible.builtin.user:
+    name: "{{ youtrack_user }}"
+    comment: Youtrack
+    group: "{{ youtrack_user }}"
+    password: '!'
+    create_home: yes
+    home: "{{ youtrack_home_dir }}"
+  when: youtrack_create_user|bool
+
+- name: user | create required directories
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    mode: 0750
+  loop:
+    - "{{ youtrack_home_dir }}/.cache/youtrack"
+    - "{{ youtrack_data_dir }}"
+    - "{{ youtrack_logs_dir }}"
+    - "{{ youtrack_backups_dir }}"
+    - "{{ youtrack_releases_dir }}"

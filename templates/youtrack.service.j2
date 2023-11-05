@@ -3,12 +3,19 @@ Description=Youtrack
 Requires=network.target
 After=syslog.target network.target
 
-[Service]
-Type=simple
-WorkingDirectory={{ youtrack_home_dir }}
-ExecStart=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar --J-Xmx{{ youtrack_xmx_megabytes }}m {{ __youtrack_exec_options }}
-ExecStop=/usr/bin/java -jar {{ youtrack_home_dir }}/youtrack.jar stop
-User={{ youtrack_user }}
-
 [Install]
 WantedBy=default.target
+
+[Service]
+Type=forking
+RemainAfterExit=yes
+User={{ youtrack_user }}
+Group={{ youtrack_group }}
+SyslogIdentifier=youtrack
+WorkingDirectory={{ youtrack_home_dir }}
+PIDFile={{ youtrack_logs_dir }}/youtrack.pid
+RestartSec=5
+Restart=on-failure
+
+ExecStart={{ youtrack_home_dir }}/youtrack/bin/youtrack.sh start --no-browser
+ExecStop={{ youtrack_home_dir }}/youtrack/bin/youtrack.sh stop
