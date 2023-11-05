@@ -3,15 +3,20 @@
 
 Role to install Jetbrains YouTrack project management platform.
 
-YouTrack is installed from ZIP archive and only this option is supported.
+## Important considerations
 
-If YouTrack was installed as a JAR file (with role's version less then 2.x.x) then upgrade to ZIP version should be supported. Anyway don't forget to create backup before any upgrade.
-
-Please check [upgrade path](https://www.jetbrains.com/help/youtrack/server/Upgrade-YouTrack-ZIP.html#upgrade-matrix) before upgrading from one version to an another one.
+- YouTrack is installed from ZIP archive and only this option is supported.
+- Don't forget to create backup before any upgrade.
+- Please check [upgrade path](https://www.jetbrains.com/help/youtrack/server/Upgrade-YouTrack-ZIP.html#upgrade-matrix) before upgrading from one version to an another one.
+- Seems like there is no way to fully automate upgrade (as it was with JAR version) and it's required to go through configuration wizard each time.
+- During upgrade select previous release directory as a source (or restore from backup).
+- Proper way to upgrade from JAR version is to create backup, stop service, (re)move `youtrack_home_dir`, install YouTrack from scratch and restore backup.
 
 ## Requirements
 
 Zip or unzip should be installed on target host.
+
+JDK is not required because of embedded into archive version is used.
 
 ## Role Variables
 
@@ -22,7 +27,7 @@ Zip or unzip should be installed on target host.
 | youtrack_user | User to run YouTrack service | `youtrack` |
 | youtrack_group | Group for YouTrack user | `{{ youtrack_user }}` |
 | youtrack_home_dir | Home directory for YouTrack user | `/home/{{ youtrack_user }}` |
-| youtrack_data_dir | YouTrack data directory | `{{ youtrack_home_dir }}/teamsysdata` |
+| youtrack_data_dir | YouTrack data directory | `{{ youtrack_home_dir }}/data` |
 | youtrack_logs_dir | YouTrack logs directory | `{{ youtrack_home_dir }}/logs` |
 | youtrack_backups_dir | YouTrack backups directory | `{{ youtrack_home_dir }}/backups` |
 | youtrack_releases_dir | Directory to extract YouTrack ZIP atchive | `{{ youtrack_home_dir }}/releases` |
