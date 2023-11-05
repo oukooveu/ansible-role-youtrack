@@ -3,28 +3,32 @@
 
 Role to install Jetbrains YouTrack project management platform.
 
-YouTrack is installed from JAR file as this described [here](https://www.jetbrains.com/help/youtrack/server/Install-YouTrack-JAR-as-Service-Linux.html).
+YouTrack is installed from ZIP archive and only this option is supported.
+
+If YouTrack was installed as a JAR file (with role's version less then 2.x.x) then upgrade to ZIP version should be supported. Anyway don't forget to create backup before any upgrade.
+
+Please check [upgrade path](https://www.jetbrains.com/help/youtrack/server/Upgrade-YouTrack-ZIP.html#upgrade-matrix) before upgrading from one version to an another one.
 
 ## Requirements
 
-JRE version greater than 11 should be installed.
+Zip or unzip should be installed on target host.
 
 ## Role Variables
 
-Most important options are listed below for whole list please examine defaults/main.yml.
-
-`youtrack_version`: YourTrack version to install (default is '2021.3.29124');
-
-`youtrack_create_user`: Create or not dedicated user unless `true` user should exist (default is `true`);
-
-`youtrack_restore_backup`: Restore YourTrack from given backup file, all data will be removed, use this with caution (default is `false`);
-
-`youtrack_startup_options`: String which is appended to YourTrack startup command;
-
-`youtrack_jvm_options`: YouTrack JVM options, only system properties are supported, check [this](https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#general-parameters) for the list;
-
-`youtrack_env_options`: YouTrack startup options (are passed through command line arguments, list of available options could be found [here](https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html#environmental-parameters).
-
+| Variable | Description | Default value |
+|----------|-------------|---------------|
+| youtrack_version | YourTrack version to install | `2023.2.20316` |
+| youtrack_create_user | Create dedicated user otherwise user should exist | `true` |
+| youtrack_user | User to run YouTrack service | `youtrack` |
+| youtrack_group | Group for YouTrack user | `{{ youtrack_user }}` |
+| youtrack_home_dir | Home directory for YouTrack user | `/home/{{ youtrack_user }}` |
+| youtrack_data_dir | YouTrack data directory | `{{ youtrack_home_dir }}/teamsysdata` |
+| youtrack_logs_dir | YouTrack logs directory | `{{ youtrack_home_dir }}/logs` |
+| youtrack_backups_dir | YouTrack backups directory | `{{ youtrack_home_dir }}/backups` |
+| youtrack_releases_dir | Directory to extract YouTrack ZIP atchive | `{{ youtrack_home_dir }}/releases` |
+| youtrack_restore_backup | Restore YourTrack from given backup file, all data will be removed, use this with caution | `false` |
+| youtrack_restore_backup_file | Backup file to restore | N/A |
+| youtrack_options | YouTrack options, check [this](https://www.jetbrains.com/help/youtrack/server/Configure-JVM-Options.html) and [this](https://www.jetbrains.com/help/youtrack/server/YouTrack-Java-Start-Parameters.html) for the completed list | see `defaults/main.yml` |
 
 ## Example Playbook
 
@@ -32,7 +36,7 @@ Most important options are listed below for whole list please examine defaults/m
 - name: install youtrack
   hosts: all
   vars:
-    youtrack_version: '2022.2.51836'
+    youtrack_logs_dir: "/var/log/youtrack"
   roles:
     - role: oukooveu.youtrack
 ```

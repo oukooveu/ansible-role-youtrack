@@ -1,0 +1,38 @@
+---
+- name: configure | check for current link
+  ansible.builtin.stat:
+    path: "{{ youtrack_home_dir }}/youtrack"
+  register: __link
+
+- name: configure | extract current version
+  ansible.builtin.set_fact:
+    __version: "{{ __link.stat.lnk_target | regex_replace('.*(\\d{4}\\.\\d{1}\\.\\d{5})$', '\\1') }}"
+  when: __link.stat.exists
+
+- name: configure | prepare startup options
+  ansible.builtin.set_fact:
+    __options_config: "{% for opt in youtrack_options %}{{ opt.name }}={{ opt.value }}{% if not loop.last %} {% endif %}{% endfor %}"
+
+- name: configure | save options
+  ansible.builtin.copy:
+    content: "{{ __options_config }}"
+    dest: "{{ youtrack_home_dir }}/.cache/youtrack/configure.options"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    mode: "0640"
+  register: __options_file
+  notify: restart youtrack service
+
+- name: configure | stop service on update (configure does not work while process is running)
+  ansible.builtin.systemd:
+    name: youtrack
+    state: stopped
+  when:
+    - __link.stat.exists
+    - __version != youtrack_version or __options_file.changed
+
+- name: configure | run configure script # noqa: no-changed-when
+  ansible.builtin.command: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}/bin/youtrack.sh configure {{ __options_config }}"
+  become: true
+  become_user: "{{ youtrack_user }}"
+  when: not __link.stat.exists or __version != youtrack_version or __options_file.changed

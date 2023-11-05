@@ -1,4 +1,4 @@
 youtrack_required_packages:
+  - unzip
   - hostname
   - net-tools
-  - java-11-openjdk

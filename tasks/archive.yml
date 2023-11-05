@@ -1,0 +1,20 @@
+---
+- name: archive | download
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.zip"
+    dest: "{{ youtrack_home_dir }}/.cache/youtrack/youtrack-{{ youtrack_version }}.zip"
+    checksum: "sha256:https://download.jetbrains.com/charisma/youtrack-{{ youtrack_version }}.zip.sha256"
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    mode: "0640"
+  register: __archive_downloaded
+
+- name: archive | extract files
+  ansible.builtin.unarchive:
+    src: "{{ youtrack_home_dir }}/.cache/youtrack/youtrack-{{ youtrack_version }}.zip"
+    dest: "{{ youtrack_releases_dir }}"
+    remote_src: true
+    owner: "{{ youtrack_user }}"
+    group: "{{ youtrack_group }}"
+    mode: "0750"
+  when: __archive_downloaded.changed # noqa: no-handler
