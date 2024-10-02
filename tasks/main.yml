@@ -20,7 +20,7 @@
     state: link
     follow: no
     src: "{{ youtrack_releases_dir }}/youtrack-{{ youtrack_version }}"
-    dest: "{{ youtrack_home_dir }}/youtrack"
+    dest: "{{ youtrack_base_dir }}"
     owner: "{{ youtrack_user }}"
     group: "{{ youtrack_group }}"
   notify: restart youtrack service
