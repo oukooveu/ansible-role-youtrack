@@ -12,10 +12,10 @@ RemainAfterExit=yes
 User={{ youtrack_user }}
 Group={{ youtrack_group }}
 SyslogIdentifier=youtrack
-WorkingDirectory={{ youtrack_base_dir }}
+WorkingDirectory={{ youtrack_release_link }}
 PIDFile={{ youtrack_logs_dir }}/youtrack.pid
 RestartSec=5
 Restart=on-failure
 
-ExecStart={{ youtrack_base_dir }}/bin/youtrack.sh start --no-browser
-ExecStop={{ youtrack_base_dir }}/bin/youtrack.sh stop
+ExecStart={{ youtrack_release_link }}/bin/youtrack.sh start --no-browser
+ExecStop={{ youtrack_release_link }}/bin/youtrack.sh stop
