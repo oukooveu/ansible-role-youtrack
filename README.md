@@ -27,6 +27,7 @@ JDK is not required because of embedded into archive version is used.
 | youtrack_user | User to run YouTrack service | `youtrack` |
 | youtrack_group | Group for YouTrack user | `{{ youtrack_user }}` |
 | youtrack_home_dir | Home directory for YouTrack user | `/home/{{ youtrack_user }}` |
+| youtrack_release_link | Location of the symbolic link for the latest version of youtrack installed | `{{ youtrack_home_dir }}/youtrack` |
 | youtrack_data_dir | YouTrack data directory | `{{ youtrack_home_dir }}/data` |
 | youtrack_logs_dir | YouTrack logs directory | `{{ youtrack_home_dir }}/logs` |
 | youtrack_backups_dir | YouTrack backups directory | `{{ youtrack_home_dir }}/backups` |

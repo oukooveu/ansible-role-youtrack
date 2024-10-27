@@ -1,7 +1,7 @@
 ---
 - name: configure | check for current link
   ansible.builtin.stat:
-    path: "{{ youtrack_home_dir }}/youtrack"
+    path: "{{ youtrack_release_link }}"
   register: __link
 
 - name: configure | extract current version

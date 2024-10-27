@@ -4,6 +4,7 @@ youtrack_create_user: true
 youtrack_user: youtrack
 youtrack_group: "{{ youtrack_user }}"
 youtrack_home_dir: "/home/{{ youtrack_user }}"
+youtrack_release_link: "{{ youtrack_home_dir }}/youtrack"
 youtrack_data_dir: "{{ youtrack_home_dir }}/data"
 youtrack_logs_dir: "{{ youtrack_home_dir }}/logs"
 youtrack_backups_dir: "{{ youtrack_home_dir }}/backups"
